@@ -1,0 +1,18 @@
+#베이스 이미지를 도커 허브에서 가져온다.
+FROM node:alpine
+
+#해당 프론트엔드 소스코드들이 들어가게 된다.
+WORKDIR /app
+
+#소스코드가 바뀔때마다 종속성을 다시 복사해주는 수고를 하지 않기 위해 먼저 종속성을
+#담고 있는 package.json을 먼저 복사한다. (WORKDIR에 복사)
+COPY package.json ./
+
+#package.json에 있는 종속성을 다운받는다.
+RUN npm install
+
+#모든 소스코드들을 WORKDIR에 복사한다.
+COPY ./ ./
+
+#컨테이너가 실행될때 같이 실행할 명령어를 지정해준다.
+CMD [ "npm", "run", "start" ]
